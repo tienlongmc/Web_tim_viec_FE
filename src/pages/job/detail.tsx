@@ -8,6 +8,7 @@ import { Col, Divider, Row, Skeleton, Tag } from "antd";
 import { DollarOutlined, EnvironmentOutlined, HistoryOutlined } from "@ant-design/icons";
 import { getLocationName } from "@/config/utils";
 import dayjs from 'dayjs';
+import 'dayjs/locale/vi'; 
 import relativeTime from 'dayjs/plugin/relativeTime';
 import ApplyModal from "@/components/client/modal/apply.modal";
 dayjs.extend(relativeTime)

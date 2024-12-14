@@ -114,6 +114,12 @@ export const callFetchJobById = (id: string) => {
     return axios.get<IBackendRes<IJob>>(`/api/v1/jobs/${id}`);
 }
 
+export const callSearchJobByLocationAndSkills = (skills: string[], locations: string[]) => {
+    return axios.post<IBackendRes<IJob[]>>('/api/v1/jobs/search', {
+        skills,
+        location: locations,
+    });
+};
 /**
  * 
 Module Resume
