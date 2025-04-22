@@ -1,6 +1,6 @@
 import { Button, Col, Form, Row, Select, Card } from 'antd';
 import { EnvironmentOutlined, ThunderboltOutlined } from '@ant-design/icons';
-import { LOCATION_LIST, SKILLS_LIST } from '@/config/utils';
+import { convertSlug, LOCATION_LIST, SKILLS_LIST } from '@/config/utils';
 import { ProForm } from '@ant-design/pro-components';
 import axios from 'axios';
 import { useState } from 'react';
@@ -10,6 +10,7 @@ import 'dayjs/locale/vi';
 import styles from 'styles/client.module.scss';// CSS module cho styling
 import { callSearchJobByLocationAndSkills } from '@/config/api';
 import { IJob } from '@/types/backend';
+import { useNavigate } from 'react-router-dom';
 
 dayjs.extend(relativeTime);
 dayjs.locale('vi');
@@ -20,9 +21,25 @@ const SearchClient = () => {
     const [form] = Form.useForm();
     const [displayJob, setDisplayJob] = useState<IJob[]>([]);  // Lưu danh sách công việc
     const [loading, setLoading] = useState(false); // Trạng thái tải dữ liệu
-
+    const navigate = useNavigate();
+    const [hasSearched, setHasSearched] = useState(false);
+    
     const onFinish = async (values: any) => {
         setLoading(true); // Bắt đầu tải
+       
+        setHasSearched(true); // Đánh dấu là đã tìm kiếm
+        try {
+            const res = await callSearchJobByLocationAndSkills(values.skills, values.location);
+            if (res?.data) {
+                setDisplayJob(res.data);
+            } else {
+                setDisplayJob([]);
+            }
+        } catch (error) {
+            console.error('Error searching jobs:', error);
+        } finally {
+            setLoading(false);
+        }
         try {
             const res = await callSearchJobByLocationAndSkills( values.skills,values.location);
             if (res?.data) {
@@ -36,11 +53,14 @@ const SearchClient = () => {
             setLoading(false); // Kết thúc tải
         }
     };
-
-    const handleViewDetailJob = (job: any) => {
-        console.log("Viewing details for job:", job);
-        // Bạn có thể thêm logic chuyển hướng hoặc mở modal hiển thị chi tiết công việc.
-    };
+ const handleViewDetailJob = (item: IJob) => {
+        const slug = convertSlug(item.name);
+        navigate(`/job/${slug}?id=${item._id}`)
+    }
+    // const handleViewDetailJob = (job: any) => {
+    //     console.log("Viewing details for job:", job);
+    //     // Bạn có thể thêm logic chuyển hướng hoặc mở modal hiển thị chi tiết công việc.
+    // };
 
     const getLocationName = (locationId: string) => {
         const location = LOCATION_LIST.find((loc: any) => loc.value === locationId);
@@ -94,6 +114,7 @@ const SearchClient = () => {
             </ProForm>
 
             {/* Danh sách công việc */}
+            {hasSearched && (
             <Row gutter={[20, 20]} style={{ marginTop: '20px' }}>
                 {displayJob.length > 0 ? (
                     displayJob.map((item: any) => (
@@ -134,6 +155,7 @@ const SearchClient = () => {
                     !loading && <Col span={24}><p>Không tìm thấy công việc nào phù hợp.</p></Col>
                 )}
             </Row>
+            )}
         </>
     );
 };

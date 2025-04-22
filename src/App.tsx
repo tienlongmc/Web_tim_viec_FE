@@ -30,6 +30,7 @@ import ClientJobPage from './pages/job';
 import ClientJobDetailPage from './pages/job/detail';
 import ClientCompanyPage from './pages/company';
 import ClientCompanyDetailPage from './pages/company/detail';
+import VerifyPage from './pages/auth/verify/[id]/page';
 
 const LayoutClient = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -58,6 +59,8 @@ export default function App() {
   const dispatch = useAppDispatch();
   const isLoading = useAppSelector(state => state.account.isLoading);
 
+  
+  
 
   useEffect(() => {
     if (
@@ -78,7 +81,8 @@ export default function App() {
         { path: "job", element: <ClientJobPage /> },
         { path: "job/:id", element: <ClientJobDetailPage /> },
         { path: "company", element: <ClientCompanyPage /> },
-        { path: "company/:id", element: <ClientCompanyDetailPage /> }
+        { path: "company/:id", element: <ClientCompanyDetailPage /> },
+        { path: " ", element: <VerifyPage /> },
       ],
     },
 
@@ -156,6 +160,7 @@ export default function App() {
       path: "/register",
       element: <RegisterPage />,
     },
+    { path: "/auth/verify/:id", element: <VerifyPage /> },  
   ]);
 
   return (

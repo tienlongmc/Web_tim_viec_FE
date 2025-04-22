@@ -21,7 +21,13 @@ const ResumePage = () => {
     const meta = useAppSelector(state => state.resume.meta);
     const resumes = useAppSelector(state => state.resume.result);
     const dispatch = useAppDispatch();
-
+    const user = useAppSelector(state => state.account.user);
+        console.log("adjad",user)
+        let companyId = null; // Lấy companyId từ user
+        const userRole = user.role.name;
+        if(userRole ==="HR"){
+            companyId = user?.company._id;
+        }
     const [dataInit, setDataInit] = useState<IResume | null>(null);
     const [openViewDetail, setOpenViewDetail] = useState<boolean>(false);
 
@@ -203,8 +209,14 @@ const ResumePage = () => {
                     columns={columns}
                     dataSource={resumes}
                     request={async (params, sort, filter): Promise<any> => {
-                        const query = buildQuery(params, sort, filter);
-                        dispatch(fetchResume({ query }))
+                        let queryParams = { ...params };
+                        if (userRole == "HR") {
+                            queryParams["companyId"] = companyId; 
+                        }
+                        const query = buildQuery(queryParams, sort, filter);
+                        dispatch(fetchResume({ query })).then((result) => {
+                            console.log("🔹 Danh sách cv sau khi fetch:", result);
+                        });
                     }}
                     scroll={{ x: true }}
                     pagination={

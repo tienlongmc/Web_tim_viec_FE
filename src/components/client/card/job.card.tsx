@@ -9,6 +9,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import styles from 'styles/client.module.scss';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import "dayjs/locale/en"; // Import ngôn ngữ tiếng Việt
 dayjs.extend(relativeTime)
 
 interface IProps {
@@ -16,6 +17,9 @@ interface IProps {
 }
 
 const JobCard = (props: IProps) => {
+
+    dayjs.extend(relativeTime);
+    dayjs.locale("en");
     const { showPagination = false } = props;
 
     const [displayJob, setDisplayJob] = useState<IJob[] | null>(null);

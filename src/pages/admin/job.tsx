@@ -21,7 +21,15 @@ const JobPage = () => {
     const jobs = useAppSelector(state => state.job.result);
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-
+    const user = useAppSelector(state => state.account.user);
+    console.log("adjad",user)
+    let companyId = null; // Lấy companyId từ user
+    const userRole = user.role.name;
+    if(userRole ==="HR"){
+        companyId = user?.company._id;
+    }
+    console.log("hiih: ",companyId);
+    // console.log("user: ",user);
     const handleDeleteJob = async (_id: string | undefined) => {
         if (_id) {
             const res = await callDeleteJob(_id);
@@ -88,6 +96,13 @@ const JobPage = () => {
                 />
             ),
         },
+        {
+            title: 'Tên Công Ty',
+            dataIndex: ['company', 'name'], // Truy cập tên công ty từ `company.name`
+            key: 'company',
+            sorter: true, // Nếu muốn sắp xếp theo tên công ty
+        },
+        
         {
             title: 'Trạng thái',
             dataIndex: 'isActive',
@@ -222,9 +237,17 @@ const JobPage = () => {
                     columns={columns}
                     dataSource={jobs}
                     request={async (params, sort, filter): Promise<any> => {
-                        const query = buildQuery(params, sort, filter);
-                        dispatch(fetchJob({ query }))
-                    }}
+                        let queryParams = { ...params };
+                        if (userRole == "HR") {
+                            queryParams["company._id"] = companyId; 
+                        }
+                        // console.log("Query Params:", queryParams);
+                        const query = buildQuery(queryParams, sort, filter);
+                        dispatch(fetchJob({ query })).then((result) => {
+                            console.log("🔹 Danh sách công việc sau khi fetch:", result);
+                        });
+                            
+                        }}
                     scroll={{ x: true }}
                     pagination={
                         {

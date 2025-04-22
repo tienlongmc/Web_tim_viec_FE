@@ -93,6 +93,15 @@ const ViewDetailResume = (props: IProps) => {
                     </Descriptions.Item>
                     <Descriptions.Item label="Ngày tạo">{dataInit && dataInit.createdAt ? dayjs(dataInit.createdAt).format('DD-MM-YYYY HH:mm:ss') : ""}</Descriptions.Item>
                     <Descriptions.Item label="Ngày sửa">{dataInit && dataInit.updatedAt ? dayjs(dataInit.updatedAt).format('DD-MM-YYYY HH:mm:ss') : ""}</Descriptions.Item>
+                    <Descriptions.Item label="CV" span={1} >
+                    {dataInit?.url ? (
+                        <Button type="link" href={`http://localhost:8000/images/resume/${dataInit.url}`} target="_blank" style={{ width: "100%" }}>
+                            Xem CV
+                        </Button>
+                    ) : (
+                        "Chưa có CV"
+                    )}
+                </Descriptions.Item>
 
                 </Descriptions>
             </Drawer>

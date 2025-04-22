@@ -31,7 +31,7 @@ const LayoutAdmin = () => {
     const [collapsed, setCollapsed] = useState(false);
     const [activeMenu, setActiveMenu] = useState('');
     const user = useAppSelector(state => state.account.user);
-
+console.log("ussername layoutamdin: ",user);
     const permissions = useAppSelector(state => state.account.user.permissions);
     const [menuItems, setMenuItems] = useState<MenuProps['items']>([]);
 
@@ -40,6 +40,15 @@ const LayoutAdmin = () => {
 
     useEffect(() => {
         if (permissions?.length) {
+            // let role = null;
+            // let compantId = null;
+            // if(user?.role?._id === '675f030cb278f288aa3b2cea'){
+            //     compantId = user?.company._id;
+            // }
+            // const isSuperAdmin = user?.role?._id === '675d22c722092d29f819f585';
+            // const isHR = user?.role._id === '675f030cb278f288aa3b2cea'; // Kiểm tra role HR
+            
+
             const viewCompany = permissions.find(item =>
                 item.apiPath === ALL_PERMISSIONS.COMPANIES.GET_PAGINATE.apiPath
                 && item.method === ALL_PERMISSIONS.COMPANIES.GET_PAGINATE.method
@@ -80,6 +89,13 @@ const LayoutAdmin = () => {
                     label: <Link to='/admin/company'>Company</Link>,
                     key: '/admin/company',
                     icon: <BankOutlined />,
+                //     label: isSuperAdmin 
+                //     ? <Link to='/admin/company'>Company</Link>  // Super Admin xem tất cả công ty
+                //     : isHR
+                //         ? <Link to={`/admin/company/${compantId}`}>My Company</Link> // HR chỉ xem công ty của họ
+                //         : <Link to='/admin/company'>Company</Link>, // Người dùng khác có quyền thì xem danh sách
+                // key: isHR ? `/admin/company/${compantId}` : '/admin/company',
+                // icon: <BankOutlined />,
                 }] : []),
 
                 ...(viewUser ? [{
@@ -167,7 +183,7 @@ const LayoutAdmin = () => {
                         collapsed={collapsed}
                         onCollapse={(value) => setCollapsed(value)}>
                         <div style={{ height: 32, margin: 16, textAlign: 'center' }}>
-                            <BugOutlined />  ADMIN
+                            <BugOutlined />  {user?.role?.name}
                         </div>
                         <Menu
                             selectedKeys={[activeMenu]}

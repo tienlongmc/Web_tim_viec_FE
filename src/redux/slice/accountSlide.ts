@@ -22,14 +22,21 @@ interface IState {
         role: {
             _id: string;
             name: string;
-        }
+        },
+        age:number;
+        address:string;
+        company: { // Thêm thông tin công ty vào user
+            _id: string,
+            name: string,
+        },
         permissions: {
             _id: string;
             name: string;
             apiPath: string;
             method: string;
             module: string;
-        }[]
+        }[],
+        avatar:string;
     };
     activeMenu: string;
 }
@@ -47,7 +54,14 @@ const initialState: IState = {
             _id: "",
             name: "",
         },
+        age:0,
+        address:"",
+        company: { // Thêm thông tin công ty vào user
+            _id: "",
+            name: "",
+        },
         permissions: [],
+        avatar:""
     },
 
     activeMenu: 'home'
@@ -69,8 +83,15 @@ export const accountSlide = createSlice({
             state.user._id = action?.payload?._id;
             state.user.email = action.payload.email;
             state.user.name = action.payload.name;
+            state.user.age = action.payload.age;
+            state.user.address = action.payload.address ;
             state.user.role = action?.payload?.role;
             state.user.permissions = action?.payload?.permissions;
+            state.user.company = action?.payload?.company;
+            state.user.avatar = action?.payload?.avatar;
+            console.log("Payload:", action.payload);
+            console.log("Company:", action.payload?.company);
+            
         },
         setLogoutAction: (state, action) => {
             localStorage.removeItem('access_token');
@@ -83,7 +104,14 @@ export const accountSlide = createSlice({
                     _id: "",
                     name: "",
                 },
+                age:0,
+                address:"",
+                company: { // Thêm thông tin công ty vào user
+                    _id: "",
+                    name: "",
+                },
                 permissions: [],
+                avatar:""
             }
         },
         setRefreshTokenAction: (state, action) => {
@@ -108,8 +136,12 @@ export const accountSlide = createSlice({
                 state.user._id = action?.payload?.user?._id;
                 state.user.email = action.payload.user?.email;
                 state.user.name = action.payload.user?.name;
+                state.user.age = action.payload.user?.age;
+                state.user.address = action.payload.user?.address;
                 state.user.role = action?.payload?.user?.role;
                 state.user.permissions = action?.payload?.user?.permissions;
+                state.user.company = action?.payload?.user?.company;
+                state.user.avatar = action?.payload?.user?.avatar;
             }
         })
 

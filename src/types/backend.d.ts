@@ -21,17 +21,24 @@ export interface IAccount {
         _id: string;
         email: string;
         name: string;
+        age:number;
+        address:string;
+        company:{
+            _id: string;
+            name: string;
+        };
         role: {
             _id: string;
             name: string;
-        }
+        };
         permissions: {
             _id: string;
             name: string;
             apiPath: string;
             method: string;
             module: string;
-        }[]
+        }[];
+        avatar:string
     }
 }
 

@@ -8,6 +8,8 @@ const { Option } = Select;
 
 
 const RegisterPage = () => {
+
+    // const router = useRouter()
     const navigate = useNavigate();
     const [isSubmit, setIsSubmit] = useState(false);
 
@@ -17,8 +19,10 @@ const RegisterPage = () => {
         const res = await callRegister(name, email, password as string, +age, gender, address);
         setIsSubmit(false);
         if (res?.data?._id) {
-            message.success('Đăng ký tài khoản thành công!');
-            navigate('/login')
+            navigate(`/auth/verify/${res?.data?._id}`);
+
+            // message.success('Đăng ký tài khoản thành công!');
+            // navigate('/login')
         } else {
             notification.error({
                 message: "Có lỗi xảy ra",

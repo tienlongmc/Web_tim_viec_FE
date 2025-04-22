@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { CodeOutlined, ContactsOutlined, DashOutlined, LogoutOutlined, MenuFoldOutlined, RiseOutlined, TwitterOutlined } from '@ant-design/icons';
-import { Avatar, Drawer, Dropdown, MenuProps, Space, message } from 'antd';
+import { Avatar, Drawer, Dropdown, Flex, MenuProps, Space, message } from 'antd';
 import { Menu, ConfigProvider } from 'antd';
 import styles from '@/styles/client.module.scss';
 import { isMobile } from 'react-device-detect';
@@ -9,8 +9,10 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { callLogout } from '@/config/api';
-import { setLogoutAction } from '@/redux/slice/accountSlide';
+import { setLogoutAction, setUserLoginInfo } from '@/redux/slice/accountSlide';
 import ManageAccount from './modal/manage.account';
+import { jwtDecode } from 'jwt-decode';
+import Cookies from "js-cookie";
 
 const Header = (props: any) => {
     const navigate = useNavigate();
@@ -19,15 +21,58 @@ const Header = (props: any) => {
     const isAuthenticated = useAppSelector(state => state.account.isAuthenticated);
     const user = useAppSelector(state => state.account.user);
     const [openMobileMenu, setOpenMobileMenu] = useState<boolean>(false);
-
+    console.log("ussername header: ",user);
     const [current, setCurrent] = useState('home');
     const location = useLocation();
+    const [avatar, setAvatar] = useState<string | null>(null);
 
     const [openMangeAccount, setOpenManageAccount] = useState<boolean>(false);
+    // useEffect(()=>{
+    //     const urlParams  = new URLSearchParams(window.location.search);
+    //     const token = urlParams.get("token");
+    //     if(token){
+    //     localStorage.setItem("jwtToken",token);
+    //     window.location.href = "http://localhost:3000";
+    //     }
+    // },[]);
+    // useEffect(() => {
+    //     setCurrent(location.pathname);
+    // }, [location])
 
     useEffect(() => {
-        setCurrent(location.pathname);
-    }, [location])
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get("token");
+    
+        if (token) {
+            // Lưu token vào localStorage hoặc cookie
+            // localStorage.setItem("token", token);
+            localStorage.setItem('access_token', token);
+            Cookies.set('refresh_token', token, {  expires: 5 / 1440 });
+    
+            // Gửi token lên server để lấy thông tin user
+            fetchUser(token);
+    
+            // Xóa token khỏi URL để tránh bị lộ
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+    }, []);
+    let avt='';
+    const fetchUser = (token: string) => {
+        try {
+            // console.log("User info từ JWT1:");
+            const decoded: any = jwtDecode(token); // Giải mã token
+            // console.log("User info từ JWT2:");
+            if (!decoded) throw new Error("Không giải mã được token!");
+    
+            console.log("User info từ JWT3:", decoded);
+            setAvatar(decoded.avatar);
+            // Cập nhật Redux hoặc state với thông tin user từ token
+            dispatch(setUserLoginInfo(decoded));
+        } catch (error) {
+            console.error("Lỗi khi giải mã token:", error);
+        }
+    };
+     
 
     const items: MenuProps['items'] = [
         {
@@ -124,7 +169,13 @@ const Header = (props: any) => {
                                         <Dropdown menu={{ items: itemsDropdown }} trigger={['click']}>
                                             <Space style={{ cursor: "pointer" }}>
                                                 <span>Welcome {user?.name}</span>
-                                                <Avatar> {user?.name?.substring(0, 2)?.toUpperCase()} </Avatar>
+                                                <Avatar> 
+                                                 {/* <img src={user.avatar} alt="Avatar" /> */}
+                                                        {/* {user?.name?.substring(0, 2)?.toUpperCase()}  */}
+                                                        {/* {user.avatar} */}
+                                                        {avatar? <img src={avatar}style={{ width: '26px', height: '27px',borderRadius: '50%' }} alt="Avatar" /> : user?.name?.substring(0, 2)?.toUpperCase()}
+                                                    </Avatar>
+
                                             </Space>
                                         </Dropdown>
                                     }

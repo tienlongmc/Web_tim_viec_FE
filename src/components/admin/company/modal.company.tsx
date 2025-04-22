@@ -205,7 +205,7 @@ const ModalCompany = (props: IProps) => {
                                 <ProFormText
                                     label="Tên công ty"
                                     name="name"
-                                    rules={[{ required: true, message: 'Vui lòng không bỏ trống' }]}
+                                    rules={[{ required: true, message: 'Vui lòng không bỏ trống Tên công ty' }]}
                                     placeholder="Nhập tên công ty"
                                 />
                             </Col>
@@ -216,7 +216,7 @@ const ModalCompany = (props: IProps) => {
                                     name="logo"
                                     rules={[{
                                         required: true,
-                                        message: 'Vui lòng không bỏ trống',
+                                        message: 'Vui lòng không bỏ trống Ảnh Logo',
                                         validator: () => {
                                             if (dataLogo.length > 0) return Promise.resolve();
                                             else return Promise.reject(false);
@@ -262,7 +262,7 @@ const ModalCompany = (props: IProps) => {
                                 <ProFormTextArea
                                     label="Địa chỉ"
                                     name="address"
-                                    rules={[{ required: true, message: 'Vui lòng không bỏ trống' }]}
+                                    rules={[{ required: true, message: 'Vui lòng không bỏ trống địa chỉ' }]}
                                     placeholder="Nhập địa chỉ công ty"
                                     fieldProps={{
                                         autoSize: { minRows: 4 }

@@ -8,7 +8,7 @@ import { Col, Divider, Row, Skeleton, Tag } from "antd";
 import { DollarOutlined, EnvironmentOutlined, HistoryOutlined } from "@ant-design/icons";
 import { getLocationName } from "@/config/utils";
 import dayjs from 'dayjs';
-import 'dayjs/locale/vi'; 
+import 'dayjs/locale/en'; 
 import relativeTime from 'dayjs/plugin/relativeTime';
 import ApplyModal from "@/components/client/modal/apply.modal";
 dayjs.extend(relativeTime)
@@ -23,6 +23,9 @@ const ClientJobDetailPage = (props: any) => {
     let location = useLocation();
     let params = new URLSearchParams(location.search);
     const id = params?.get("id"); // job id
+    dayjs.extend(relativeTime);
+    dayjs.locale("en");
+    console.log(dayjs().format()); // 2025-03-27T14:30:00+07:00
 
     useEffect(() => {
         const init = async () => {
@@ -56,6 +59,7 @@ const ClientJobDetailPage = (props: any) => {
                                         className={styles["btn-apply"]}
                                     >Apply Now</button>
                                 </div>
+                                
                                 <Divider />
                                 <div className={styles["skills"]}>
                                     {jobDetail?.skills?.map((item, index) => {

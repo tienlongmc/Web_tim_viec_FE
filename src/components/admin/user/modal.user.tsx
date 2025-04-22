@@ -65,7 +65,7 @@ const ModalUser = (props: IProps) => {
                     name: company?.label ?? company.name
                 }
             }
-
+            console.log("_id: ",dataInit?._id)
             const res = await callUpdateUser(user, dataInit._id);
             if (res.data) {
                 message.success("Cập nhật user thành công");

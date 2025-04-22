@@ -1,14 +1,15 @@
-import { Button, Col, Form, Modal, Row, Select, Table, Tabs, message, notification } from "antd";
+import { Button, Col, Form, Input, Modal, Row, Select, Table, Tabs, message, notification } from "antd";
 import { isMobile } from "react-device-detect";
 import type { TabsProps } from 'antd';
 import { IResume } from "@/types/backend";
 import { useState, useEffect } from 'react';
-import { callFetchResumeByUser, callGetSubscriberSkills, callUpdateSubscriber } from "@/config/api";
+import { callFetchResumeByUser, callFetchUserById, callGetSubscriberSkills, callUpdateSubscriber, callUpdateUser } from "@/config/api";
 import type { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
 import { MonitorOutlined } from "@ant-design/icons";
 import { SKILLS_LIST } from "@/config/utils";
 import { useAppSelector } from "@/redux/hooks";
+import { ModalForm, ProFormDigit, ProFormText } from "@ant-design/pro-components";
 
 interface IProps {
     open: boolean;
@@ -93,13 +94,122 @@ const UserResume = (props: any) => {
     )
 }
 
-const UserUpdateInfo = (props: any) => {
+const UserUpdateInfo = () => {
+    const [form] = Form.useForm();
+    const [loading, setLoading] = useState(false);
+    const user = useAppSelector(state => state.account.user);
+    const [userInfo, setUserInfo] = useState<any>(null); 
+   
+    console.log("hihihh: ",user);
+  //  const s =  callFetchUserById(user._id);
+  //  console.log("s: ",s);
+  useEffect(() => {
+    const fetchUser = async () => {
+        if (!user._id) return;
+        try {
+            const res = await callFetchUserById(user._id);
+            console.log("Dữ liệu từ API: ", res);
+            if (res?.data) {
+                form.setFieldsValue({
+                    name: res.data.name || "",
+                    email: res.data.email || "",
+                    age: res.data.age || 0,
+                    address: res.data.address || "",
+                });
+            }
+        } catch (error) {
+            console.error("Lỗi khi lấy user:", error);
+        }
+    };
+
+    fetchUser();
+}, [user._id]);
+
+   
+
+    const onFinish = async (values: any) => {
+        if (!user?._id) return;
+
+        setLoading(true);
+        try {
+            const userUpdate = { ...user, ...values }; // Giữ dữ liệu cũ, chỉ cập nhật trường mới
+            const res = await callUpdateUser(userUpdate, user._id);
+            if (res.data) {
+                message.success("Cập nhật thông tin thành công");
+                //reloadTable();
+            } else {
+                notification.error({
+                    message: "Có lỗi xảy ra",
+                    description: res.message,
+                });
+            }
+        } catch (error) {
+            notification.error({
+                message: "Có lỗi xảy ra",
+                description: "Không thể cập nhật thông tin",
+            });
+        }
+        setLoading(false);
+    };
+
     return (
-        <div>
-            //todo
-        </div>
-    )
-}
+        <Form
+        form={form}
+        layout="vertical"
+        onFinish={onFinish}
+        initialValues={{
+            name: user.name || "",
+                email: user.email || "",
+                age: user.age || 0,
+                address: user.address || "",
+        }}
+    >
+        <Form.Item
+            label="Họ và tên"
+            name="name"
+            rules={[{ required: true, message: "Vui lòng nhập họ và tên" }]}
+        >
+            <Input />
+        </Form.Item>
+
+        <Form.Item
+            label="Email"
+            name="email"
+            rules={[{ required: true, type: "email", message: "Vui lòng nhập email hợp lệ" }]}
+        >
+            <Input disabled />
+        </Form.Item>
+
+        <Form.Item
+            label="Tuổi"
+            name="age"
+            rules={[{ required: true, message: "Vui lòng nhập tuổi" }]}
+        >
+            <Input type="number" />
+        </Form.Item>
+        {/* <Form.Item label="Giới tính" name="gender" rules={[{ required: true, message: "Vui lòng chọn giới tính" }]}>
+                    <Select placeholder="Chọn giới tính">
+                        <Select.Option value="MALE">Nam</Select.Option>
+                        <Select.Option value="FEMALE">Nữ</Select.Option>
+                        <Select.Option value="OTHER">Khác</Select.Option>
+                    </Select>
+                </Form.Item> */}
+        <Form.Item
+            label="Địa chỉ"
+            name="address"
+            rules={[{ required: true, message: "Vui lòng nhập địa chỉ" }]}
+        >
+            <Input />
+        </Form.Item>
+
+        <Form.Item>
+            <Button type="primary" htmlType="submit" loading={loading}>
+                Cập nhật
+            </Button>
+        </Form.Item>
+    </Form>
+);
+};
 
 const JobByEmail = (props: any) => {
     const [form] = Form.useForm();

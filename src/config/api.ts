@@ -89,6 +89,10 @@ export const callDeleteUser = (id: string) => {
 export const callFetchUser = (query: string) => {
     return axios.get<IBackendRes<IModelPaginate<IUser>>>(`/api/v1/users?${query}`);
 }
+export const callFetchUserById = (id: string) => {
+    return axios.get<IBackendRes<IUser>>(`/api/v1/users/${id}`);
+};
+
 
 /**
  * 
@@ -223,4 +227,20 @@ export const callFetchSubscriber = (query: string) => {
 export const callFetchSubscriberById = (id: string) => {
     return axios.get<IBackendRes<ISubscribers>>(`/api/v1/subscribers/${id}`);
 }
+
+/**
+ * 
+google login
+ */
+export const callgoogle = () => {
+    window.location.href = "http://localhost:8000/api/v1/auth/google/login";
+};
+
+export const checkcode = () => {
+    window.location.href = "http://localhost:8000/api/v1/auth/check-code";
+};
+export const callgoogle1 = () => {
+    window.location.href = "http://localhost:8000/api/v1/auth/google";
+};
+
 

@@ -13,6 +13,8 @@ import { CheckSquareOutlined } from "@ant-design/icons";
 import enUS from 'antd/lib/locale/en_US';
 import dayjs from 'dayjs';
 import { IJob } from "@/types/backend";
+import { jwtDecode } from "jwt-decode";
+
 
 const ViewUpsertJob = (props: any) => {
     const [companies, setCompanies] = useState<ICompanySelect[]>([]);
@@ -25,7 +27,18 @@ const ViewUpsertJob = (props: any) => {
     const id = params?.get("id"); // job id
     const [dataUpdate, setDataUpdate] = useState<IJob | null>(null);
     const [form] = Form.useForm();
-
+    const token = localStorage.getItem("access_token"); // Lấy token từ localStorage
+    let userRole = null;
+    let userCompany = null;
+    if (token) {
+        try {
+            const decodedToken: any = jwtDecode(token);
+            userRole = decodedToken?.role?.name;
+            userCompany = decodedToken?.company;
+        } catch (error) {
+            console.error("Lỗi khi decode token:", error);
+        }
+    }
     useEffect(() => {
         const init = async () => {
             if (id) {
@@ -247,7 +260,7 @@ const ViewUpsertJob = (props: any) => {
                                 />
                             </Col>
 
-                            {(dataUpdate?._id || !id) &&
+                            {/* {(dataUpdate?._id || !id) &&
                                 <Col span={24} md={6}>
                                     <ProForm.Item
                                         name="company"
@@ -271,7 +284,25 @@ const ViewUpsertJob = (props: any) => {
                                     </ProForm.Item>
 
                                 </Col>
-                            }
+                            } */}
+
+                        {userRole === "HR" ? (
+                            <Col span={24} md={6}>
+                                <ProForm.Item label="Thuộc Công Ty">
+                                <ProFormText  
+                                name="company"
+                                initialValue={userCompany?.name} 
+                                disabled 
+                            />
+                                </ProForm.Item>
+                            </Col>
+                        ) : (
+                            <Col span={24} md={6}>
+                                <ProForm.Item name="company" label="Thuộc Công Ty" rules={[{ required: true }]}>
+                                    <DebounceSelect allowClear showSearch placeholder="Chọn công ty" fetchOptions={fetchCompanyList} style={{ width: '100%' }} />
+                                </ProForm.Item>
+                            </Col>
+                        )}
 
                         </Row>
                         <Row gutter={[20, 20]}>
