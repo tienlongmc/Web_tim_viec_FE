@@ -1,0 +1,104 @@
+/* src/pages/home/ChatPage.module.scss */
+
+.pageWrap {
+  height: 93vh;
+  background: #0f1115;
+  display: grid;
+  place-items: center;
+  padding: 12px;
+}
+
+.chatCard {
+  width: 100%;
+  max-width: 1100px;
+  height: 100%;
+  background: #12161c;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  display: flex;
+}
+
+/* Phần bên trong Stream Chat */
+.inner {
+  width: 100%;
+  position: relative;
+}
+
+/* Header khu vực Call + tiêu đề */
+.headerBar {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  z-index: 2;
+  display: flex;
+  gap: 8px;
+}
+
+/* Override một số style mặc định của stream-chat-react */
+:global(.str-chat) {
+  --str-chat__primary-color: #2563eb; /* xanh primary */
+  --str-chat__active-primary-color: #1d4ed8;
+  --str-chat__background-color: #0f1115;
+  --str-chat__secondary-background-color: #12161c;
+  --str-chat__text-color: #e5e7eb;
+  --str-chat__message-bubble-radius: 14px;
+  --str-chat__font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto,
+    sans-serif;
+
+  height: 100%;
+  width: 100%;
+}
+
+/* Header của channel */
+:global(.str-chat__header-livestream),
+:global(.str-chat__channel-header) {
+  background: transparent !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* Danh sách tin nhắn */
+:global(.str-chat__list) {
+  background: transparent !important;
+  padding: 12px !important;
+}
+
+/* Input khung soạn */
+:global(.str-chat__message-input) {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+/* Bong bóng tin nhắn của mình */
+:global(.str-chat__message--me .str-chat__message-simple__text) {
+  background: rgba(37, 99, 235, 0.18) !important;
+  border: 1px solid rgba(37, 99, 235, 0.3) !important;
+  color: #e5e7eb !important;
+}
+
+/* Bong bóng tin nhắn của người khác */
+:global(.str-chat__message--other .str-chat__message-simple__text) {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #e5e7eb !important;
+}
+
+/* Scrollbar đẹp hơn một chút */
+:global(.str-chat__list)::-webkit-scrollbar {
+  width: 10px;
+}
+:global(.str-chat__list)::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+}
+:global(.str-chat__list)::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Responsive: trên mobile làm full khung */
+@media (max-width: 768px) {
+  .chatCard {
+    border-radius: 12px;
+  }
+}

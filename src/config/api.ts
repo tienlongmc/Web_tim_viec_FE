@@ -92,7 +92,11 @@ export const callFetchUser = (query: string) => {
 export const callFetchUserById = (id: string) => {
     return axios.get<IBackendRes<IUser>>(`/api/v1/users/${id}`);
 };
-
+export const callUpdateUserConnected = (userId: string, connectedIds: string[]) => {
+    return axios.patch<IBackendRes<IUser>>(`/api/v1/users/${userId}`, {
+        connected: connectedIds,
+    });
+};
 
 /**
  * 
@@ -118,10 +122,11 @@ export const callFetchJobById = (id: string) => {
     return axios.get<IBackendRes<IJob>>(`/api/v1/jobs/${id}`);
 }
 
-export const callSearchJobByLocationAndSkills = (skills: string[], locations: string[]) => {
+export const callSearchJobByLocationAndSkills = (skills: string[], locations: string[], search: string) => {
     return axios.post<IBackendRes<IJob[]>>('/api/v1/jobs/search', {
         skills,
         location: locations,
+        search
     });
 };
 /**
@@ -228,6 +233,15 @@ export const callFetchSubscriberById = (id: string) => {
     return axios.get<IBackendRes<ISubscribers>>(`/api/v1/subscribers/${id}`);
 }
 
+export const callFetchManagementStats = () => {
+    return axios.get<IBackendRes<{
+        totalUsers: number;
+        totalCompanies: number;
+        totalJobs: number;
+        totalResumes: number;
+    }>>('/api/v1/management/');
+};
+
 /**
  * 
 google login
@@ -243,4 +257,11 @@ export const callgoogle1 = () => {
     window.location.href = "http://localhost:8000/api/v1/auth/google";
 };
 
+// chat
+export const callChatToken = async () => {
+    const res = await axios.get<{ statusCode: number; message: string; data: string }>(
+        "/api/v1/users/chat/token"
+    );
+    return res.data;
+};
 
