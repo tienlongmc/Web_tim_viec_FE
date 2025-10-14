@@ -33,6 +33,7 @@ import ClientCompanyDetailPage from "./pages/company/detail";
 import VerifyPage from "./pages/auth/verify/[id]/page";
 import ChatPage from "./pages/home/ChatPage";
 import ListChat from "./pages/home/listChat";
+import CallPage from "./pages/CallPage";
 
 const LayoutClient = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -86,6 +87,7 @@ export default function App() {
         { path: "company/:id", element: <ClientCompanyDetailPage /> },
         { path: "chat/:id", element: <ChatPage /> },
         { path: "listchat", element: <ListChat /> },
+        { path: "call/:channelId", element: <CallPage /> },
         { path: " ", element: <VerifyPage /> },
       ],
     },

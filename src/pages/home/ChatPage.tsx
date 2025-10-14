@@ -43,7 +43,7 @@ const ChatPage = () => {
   const authUser = useAppSelector((state) => state.account.user);
 
   const enabled = !!authUser?._id;
-  console.log("hihi", enabled);
+  // console.log("hihi", enabled);
   const { data: tokenData } = useQuery({
     queryKey: ["streamToken"],
     queryFn: callChatToken, // cần trả về { token: string }
@@ -59,7 +59,7 @@ const ChatPage = () => {
   }, []);
 
   // console.log(mutation.data);
-  console.log("diy me m: ", tokenData);
+  // console.log("diy me m: ", tokenData);
   const streamToken = tokenData;
   const targetUserId = useMemo(
     () => targetUserIdParam ?? "",
@@ -125,9 +125,11 @@ const ChatPage = () => {
         try {
           await currChannel?.stopWatching();
         } catch {}
-        try {
-          await client?.disconnectUser();
-        } catch {}
+        // try {
+        //   // if (window.location.pathname !== "/chat") {
+        //   //   await client?.disconnectUser();
+        //   // }
+        // } catch {}
       })();
     };
   }, [
@@ -139,7 +141,16 @@ const ChatPage = () => {
   ]);
 
   const handleVideoCall = () => {
+    console.log("handleVideoCall", channel);
     if (!channel) return;
+    if (
+      chatClient?.wsConnection?.isHealthy === false ||
+      chatClient?.userID == null
+    ) {
+      toast.error("Kết nối chat đã ngắt, vui lòng tải lại trang.");
+      console.log("wsConnection not healthy");
+      return;
+    }
     const callUrl = `${window.location.origin}/call/${channel.id}`;
     channel.sendMessage({
       text: `I've started a video call. Join me here: ${callUrl}`,

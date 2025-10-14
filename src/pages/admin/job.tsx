@@ -93,6 +93,7 @@ const JobPage = () => {
         <ProFormSelect
           showSearch
           mode="multiple"
+          filterOption={false}
           allowClear
           valueEnum={{
             INTERN: "INTERN",
@@ -101,7 +102,7 @@ const JobPage = () => {
             MIDDLE: "MIDDLE",
             SENIOR: "SENIOR",
           }}
-          placeholder="Chọn level"
+          placeholder="Chọn trạng thái"
         />
       ),
     },

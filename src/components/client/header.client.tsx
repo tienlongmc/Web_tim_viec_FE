@@ -166,7 +166,7 @@ const Header = (props: any) => {
           {!isMobile ? (
             <div style={{ display: "flex", gap: 30 }}>
               <div className={styles["brand"]}>
-                <FaReact onClick={() => navigate("/")} title="Hỏi Dân IT" />
+                <FaReact onClick={() => navigate("/")} title="Tiến Long" />
               </div>
               <div className={styles["top-menu"]}>
                 <ConfigProvider
