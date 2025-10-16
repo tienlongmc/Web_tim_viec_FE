@@ -39,7 +39,7 @@ export interface IAccount {
       module: string;
     }[];
     avatar: string;
-    connected?: boolean;
+    connected?: string[];
   };
 }
 
