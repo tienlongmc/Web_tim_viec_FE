@@ -38,7 +38,8 @@ const ListChat = () => {
           // console.log("hihi", responses.data);
           const users = responses.map((res) => res.data);
           console.log("users:", users);
-          setConnectedUsers(users);
+          // setConnectedUsers(users);
+          setConnectedUsers(users as ConnectedUser[]);
         }
       } catch (err) {
         console.error("Fetch connected users error:", err);
@@ -104,9 +105,7 @@ const ListChat = () => {
                 boxShadow: "0 1px 2px rgba(0,0,0,0.05)",
                 transition: "box-shadow 0.3s",
                 marginBottom: "10px",
-                display: "flex", // bố cục theo hàng
                 justifyContent: "space-between", // đẩy phần tử con ra hai đầu
-                alignItems: "center", // căn giữa theo trục dọc
               }}
             >
               {/* Avatar */}
