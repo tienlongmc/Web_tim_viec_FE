@@ -35,7 +35,7 @@ const JobPage = () => {
   const navigate = useNavigate();
   const user = useAppSelector((state) => state.account.user);
   // console.log("adjad",user)
-  let companyId = null; // Lấy companyId từ user
+  let companyId: any = null; // Lấy companyId từ user
   const userRole = user.role.name;
   if (userRole === "HR") {
     companyId = user?.company._id;
@@ -91,18 +91,20 @@ const JobPage = () => {
       dataIndex: "level",
       renderFormItem: (item, props, form) => (
         <ProFormSelect
-          showSearch
+          showSearch={true}
           mode="multiple"
-          filterOption={false}
-          allowClear
+          allowClear={true}
           valueEnum={{
-            INTERN: "INTERN",
-            FRESHER: "FRESHER",
-            JUNIOR: "JUNIOR",
-            MIDDLE: "MIDDLE",
-            SENIOR: "SENIOR",
+            INTERN: "Intern",
+            FRESHER: "Fresher",
+            JUNIOR: "Junior",
+            MIDDLE: "Middle",
+            SENIOR: "Senior",
           }}
-          placeholder="Chọn trạng thái"
+          placeholder="Chọn cấp bậc"
+          fieldProps={{
+            filterOption: false,
+          }}
         />
       ),
     },

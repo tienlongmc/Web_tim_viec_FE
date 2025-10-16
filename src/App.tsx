@@ -32,8 +32,8 @@ import ClientCompanyPage from "./pages/company";
 import ClientCompanyDetailPage from "./pages/company/detail";
 import VerifyPage from "./pages/auth/verify/[id]/page";
 import ChatPage from "./pages/home/ChatPage";
-import ListChat from "./pages/home/listChat";
 import CallPage from "./pages/CallPage";
+import ListChat from "./pages/home/ListChat";
 
 const LayoutClient = () => {
   const [searchTerm, setSearchTerm] = useState("");

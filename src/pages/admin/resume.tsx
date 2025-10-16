@@ -35,7 +35,7 @@ const ResumePage = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.account.user);
   // console.log("adjad",user)
-  let companyId = null; // Lấy companyId từ user
+  let companyId: any = null; // Lấy companyId từ user
   const userRole = user.role.name;
   if (userRole === "HR") {
     companyId = user?.company._id;

@@ -15,11 +15,8 @@ import {
   Window,
 } from "stream-chat-react";
 
-import {
-  StreamChat,
-  Channel as StreamChannel,
-  DefaultGenerics,
-} from "stream-chat";
+import { StreamChat, Channel as StreamChannel } from "stream-chat";
+// DefaultGenerics,
 
 import toast from "react-hot-toast";
 import { useAppSelector } from "@/redux/hooks";
@@ -67,9 +64,9 @@ const ChatPage = () => {
   );
 
   useEffect(() => {
-    let isMounted = true;
-    let client = null;
-    let currChannel = null;
+    let isMounted: any = true;
+    let client: any = null;
+    let currChannel: any = null;
 
     const initChat = async () => {
       try {
