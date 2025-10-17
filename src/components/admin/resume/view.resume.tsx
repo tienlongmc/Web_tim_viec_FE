@@ -173,6 +173,7 @@ const ViewDetailResume = (props: IProps) => {
             <Button
               type="link"
               href={`${FRONTEND}/chat/${dataInit?.userId}`}
+              // href={`http://localhost:3000/chat/${dataInit?.userId}`}
               target="_blank"
               style={{ width: "100%" }}
               onClick={handleChatClick}
