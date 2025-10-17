@@ -258,11 +258,11 @@ google login
 // };
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
-export const callGoogle = () => {
+export const callgoogle = () => {
     window.location.href = `${BASE_URL}/api/v1/auth/google/login`;
 };
 
-export const checkCode = () => {
+export const checkcode = () => {
     window.location.href = `${BASE_URL}/api/v1/auth/check-code`;
 };
 
