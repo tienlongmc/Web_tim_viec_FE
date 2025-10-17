@@ -42,7 +42,8 @@ const ViewDetailResume = (props: IProps) => {
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
   const { onClose, open, dataInit, setDataInit, reloadTable } = props;
   const [form] = Form.useForm();
-
+  const BACKEND = import.meta.env.VITE_BACKEND_URL;
+  const FRONTEND = import.meta.env.VITE_FRONTEND_URL;
   // --- Chat states ---
   const [openChat, setOpenChat] = useState(false);
   const [sending, setSending] = useState(false);
@@ -171,7 +172,7 @@ const ViewDetailResume = (props: IProps) => {
           <Space>
             <Button
               type="link"
-              href={`http://localhost:3000/chat/${dataInit?.userId}`}
+              href={`${FRONTEND}/chat/${dataInit?.userId}`}
               target="_blank"
               style={{ width: "100%" }}
               onClick={handleChatClick}
@@ -227,7 +228,7 @@ const ViewDetailResume = (props: IProps) => {
             {dataInit?.url ? (
               <Button
                 type="link"
-                href={`http://localhost:8000/images/resume/${dataInit.url}`}
+                href={`${BACKEND}/images/resume/${dataInit.url}`}
                 target="_blank"
                 style={{ width: "100%" }}
               >

@@ -246,15 +246,28 @@ export const callFetchManagementStats = () => {
  * 
 google login
  */
-export const callgoogle = () => {
-    window.location.href = "http://localhost:8000/api/v1/auth/google/login";
+// export const callgoogle = () => {
+//     window.location.href = "http://localhost:8000/api/v1/auth/google/login";
+// };
+
+// export const checkcode = () => {
+//     window.location.href = "http://localhost:8000/api/v1/auth/check-code";
+// };
+// export const callgoogle1 = () => {
+//     window.location.href = "http://localhost:8000/api/v1/auth/google";
+// };
+const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+
+export const callGoogle = () => {
+    window.location.href = `${BASE_URL}/api/v1/auth/google/login`;
 };
 
-export const checkcode = () => {
-    window.location.href = "http://localhost:8000/api/v1/auth/check-code";
+export const checkCode = () => {
+    window.location.href = `${BASE_URL}/api/v1/auth/check-code`;
 };
+
 export const callgoogle1 = () => {
-    window.location.href = "http://localhost:8000/api/v1/auth/google";
+    window.location.href = `${BASE_URL}/api/v1/auth/google`;
 };
 
 // chat

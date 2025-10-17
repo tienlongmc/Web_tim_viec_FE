@@ -24,7 +24,7 @@ const ListChat = () => {
   const [data, setData] = useState<User | null>(null);
   const [connectedUsers, setConnectedUsers] = useState<ConnectedUser[]>([]);
   const authUser = useAppSelector((state) => state.account.user);
-
+  const FRONTEND = import.meta.env.VITE_FRONTEND_URL;
   useEffect(() => {
     const fetchConnectedUsers = async () => {
       try {
@@ -198,7 +198,8 @@ const ListChat = () => {
               >
                 <button
                   onClick={() =>
-                    (window.location.href = `http://localhost:3000/chat/${u._id}`)
+                    // (window.location.href = `http://localhost:3000/chat/${u._id}`)
+                    (window.location.href = `${FRONTEND}/chat/${u._id}`)
                   }
                   style={{
                     backgroundColor: "#3b82f6", // xanh dương
